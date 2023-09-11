@@ -194,3 +194,102 @@
 
 {% endblock %}
 
+
+{% extends 'main/base.html' %}
+
+{% block title %} center details {% endblock %}
+
+{% block content %}
+
+<div class="d-flex flex-column gap-2">
+    <h1>{{ center.centerName }}</h1>
+
+
+    <div class="row">
+        <div class="col-4"><img src="{{ center.image.url }}" class=" rounded-4 w-100" /></div>
+        <div class="col">
+            <div>
+                <p>{{ center.description }}</p>
+                <h3>{{center.content}}</h3>
+
+            </div>
+        </div>
+    </div>
+
+    <hr />
+    <form action="{% url 'centers:center_detail_view' center.id %}" method="post">
+        {% csrf_token %}
+
+        <label>Date:</label>
+        <input type="date" name="date"/><br>
+    
+          <label>Times: </label>
+            <select name="times" class="form-select">
+                {% for value, title in RequestTour.time_choices %}
+                    <option value="{{value}}">{{title}}</option>
+                {% endfor %}
+            </select>
+    <input class="btn btn-primary mt-2" type="submit" value="request tour" />
+    </form>
+
+
+
+    <h4>{% for key, value in avg.items %}
+        Review {{value|floatformat:1}}</h4>
+        {% endfor %}
+
+    <div class="mt-4">
+
+        {% for review in reviews %}
+            <div class="d-flex flex-column gap-1 border border-1 rounded p-4 mt-3">
+                <h4>{{review.user.first_name}} {{review.user.last_name}}</h4>
+                <h6>{{ review.content }}</h6>
+
+            </div>
+        {% endfor %}
+
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-6">
+
+
+            <form action="{% url 'centers:center_detail_view' center.id %}" method="post"  enctype="multipart/form-data" >
+                {% csrf_token %}
+                <textarea  class="form-control mt-2" name="content"  placeholder="content"></textarea>
+
+                <label>Rating: </label>
+                <select name="rating" class="form-select">
+                    {% for value, title in Review.rating_choices %}
+                        <option value="{{value}}">{{title}}</option>
+                    {% endfor %}
+                </select>
+
+                <input class="btn btn-primary mt-2" type="submit" value="Add Review" />
+
+            </form>
+
+        </div>
+    </div>
+  
+  
+<a class="btn btn-primary" href="{% url 'centers:center_employee_view' center.id %}" role="button">Link</a>
+  
+
+{% for employee in employees %}
+<div class="d-flex flex-column gap-1 border border-1 rounded p-4 mt-3">
+    <img src="{{ employee.employee_image.url }}" style="width: 100px" class="rounded-4 object-fit-cover border border-1  " />
+    <h6>{{ employee.employees_names }}</h6>
+
+</div>
+
+{% endfor %}
+
+<h1>This is my Google Maps web page</h1>
+<div class="google-map">
+    <iframe src={{center.location}} width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+</div>
+<p id="demo"></p>
+
+{% endblock %}
+

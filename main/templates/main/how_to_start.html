@@ -10,3 +10,124 @@
 
 
 
+
+{% extends 'main/base.html' %}
+
+{% block title %} how to start {% endblock %}
+
+{% block content %}
+
+<div class="mb-4">
+<button type="button" class="button is" onclick="myFunction()">request tour</button>
+</div>
+<div id="demo" style="display:none;">
+    <form action="{% url 'main:how_to_start_view' %}" method="post" id="request_form" >
+        {% csrf_token %}
+
+        <label>Date:</label>
+        <input type="date" name="date" id="date"/><br>
+     
+        <label>Times:</label>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <div name="times" class="buttons is">
+            {% for value, title in Request.time_choices %}
+                <button value="{{value}}"  class="time_selected button is" type="button">{{title}}</button>
+            {% endfor %}
+        </div>
+
+
+        <label>Times: </label>
+        <select name="times" id="times" class="form-select">
+            {% for value, title in Request.time_choices %}
+                <option value="{{value}}">{{title}}</option>
+            {% endfor %}
+        </select>
+
+        <button type="button" class="btn " data-bs-toggle="modal" data-bs-target="#request_tour">
+            request
+          </button>
+        
+    </form>
+</div>
+
+<div class="modal fade" tabindex="-1" id="request_tour">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Modal title</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <p id="result"  placeholder="Text Entry." disabled="disabled"></p>
+            <p id="timeresult"  placeholder="Text Entry." disabled="disabled"></p>
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button  onclick="submit_form()" class="btn btn-primary">confirm</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+<script type="text/javascript">
+var selectedButtonId = "";
+
+$('.time_selected').click(function() {
+
+  selectedButtonId = this.id;
+  alert(selectedButtonId);
+
+});
+
+function submit_form() {
+document.getElementById('request_form').submit();
+}
+
+function myFunction() {
+      document.getElementById("demo").style.display = "";
+    }
+
+    if ( document.addEventListener ) { // if addEventListener provided
+    this.addEvent = function(elem, type, fn) {
+        elem.addEventListener(type, fn, false);
+        return fn;
+    };
+
+    this.removeEvent = function(elem, type, fn) {
+        elem.removeEventListener(type, fn, false);
+    };
+} else if ( document.attachEvent ) { 
+    this.addEvent = function(elem, type, fn) {
+        var bound = function() {
+            return fn.apply(elem, arguments);
+        };
+        elem.attachEvent("on" + type, bound);
+        return bound;
+    };
+
+    this.removeEvent = function (elem, type, fn) {
+        elem.detachEvent("on" + type, fn);
+    };
+}
+
+
+var date_input = document.getElementById('date');
+date_input.onchange = function(){
+    document.getElementById("result").innerHTML = this.value; 
+}
+var time_seleted = document.getElementById('times');
+document.getElementById("timeresult").innerHTML = this.value; 
+var value =  time_seleted.value;
+var text =  time_seleted.options[ time_seleted.selectedIndex].text;
+
+    </script>
+
+
+{% endblock %}
+
+
+

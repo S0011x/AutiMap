@@ -11,3 +11,7 @@ class AppointmentBookingAdmin(admin.ModelAdmin):
 
 admin.site.register(AppointmentBooking,AppointmentBookingAdmin,)
 
+
+from django.contrib import admin
+
+# Register your models here.

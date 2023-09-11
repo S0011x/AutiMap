@@ -34,7 +34,6 @@ def login_view(request: HttpRequest):
             msg = "Username or password is no correct. No user found."
 
 
-
     return render(request, "accounts/login.html", {"msg": msg})
 
 
